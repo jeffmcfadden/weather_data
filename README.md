@@ -1,7 +1,7 @@
 # Weather Data
 
 This repo is a collection of weather data from my local weather station in 
-south-central Arizona (in the Phoenix metro area). 
+south-central Arizona. 
 
 ## The Data
 
@@ -10,6 +10,9 @@ south-central Arizona (in the Phoenix metro area).
 Observations are stored in tab-separated-value format (TSV) with per-minute
 observations. Observations are collated into daily files, grouped into folders
 for year, then month. 
+
+You'll find these observations in the `observations` folder, for example:
+`observations/2021/12/2021-12-03.tsv`
 
 The first row of each observation defines the columns. Temperature data is the
 most abundant data, followed by humidity, then pressure and dewpoint. Wind and
@@ -57,3 +60,12 @@ should be mostly accurate.
 In rare instances where data was lost due to equipment failure, computer
 bugs, or human mistakes, I have substituted observations with nearby
 stations that I trust.
+
+## TODO
+
+- Import the rest of the data (tmp/sensor_data_export.csv)
+- Establish incoming data pipeline via cron, etc.
+- Tools to build
+  - add_observation(observed_at, metric_id, value)
+  - almanac builder (including class, writer, etc)
+  - 

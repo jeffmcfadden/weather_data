@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2021-09-03	38.892	2021-09-03 16:02	25.803	2021-09-03 05:32	32.056	62.08	2021-09-03 05:38	21.416	2021-09-03 16:44	40.875	18.7	2021-09-03 09:46	12.616	2021-09-03 16:29	16.193	967.233	2021-09-03 09:53	961.779	2021-09-03 17:49	964.575

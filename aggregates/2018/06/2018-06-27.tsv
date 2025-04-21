@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2018-06-27	42.687	2018-06-27 15:00	21.125	2018-06-27 05:25	33.568	44.04	2018-06-27 06:16	10.16	2018-06-27 14:15	19.111	12.045	2018-06-27 10:23	-0.896	2018-06-27 04:10	5.837	1011.05	2018-06-27 09:53	1005.86	2018-06-27 18:50	1008.462

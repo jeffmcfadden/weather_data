@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/core'
+
+file_list = Dir.glob("observations/2022/07/*.tsv")
+
+observations = ObservationsLoader.new(metrics: METRICS).tap do |loader|
+  file_list.each { loader.load(File.open(_1)) }
+end.observations
+
+observation_aggregation = ObservationAggregation.new(observations: observations)
+
+writer = ObservationAggregationWriter.new(observation_aggregation: observation_aggregation)
+
+writer.write($stdout)

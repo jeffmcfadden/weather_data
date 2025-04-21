@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2023-06-21	39.103	2023-06-21 16:10	22.036	2023-06-21 05:50	31.226	49.674	2023-06-21 02:41	9.247	2023-06-21 14:17	22.938	12.425	2023-06-21 02:12	0.151	2023-06-21 14:17	5.686	965.582	2023-06-21 08:58	961.356	2023-06-21 20:00	963.609

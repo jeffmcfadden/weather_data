@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2019-10-11	30.0	2019-10-11 14:20	16.687	2019-10-11 07:03	22.768	32.21	2019-10-11 19:31	9.8	2019-10-11 12:20	15.301	4.394	2019-10-11 19:08	-12.605	2019-10-11 04:01	-5.332	1016.44	2019-10-11 08:38	1009.76	2019-10-11 18:26	1012.711

@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2016-08-10	41.317	2016-08-10 14:08	25.169	2016-08-10 05:26	32.247	73.32	2016-08-10 22:03	0.01	2016-08-10 00:00	18.968	21.371	2016-08-10 14:06	-72.213	2016-08-10 05:26	-31.759	1015.6	2016-08-10 07:54	1009.28	2016-08-10 18:16	1012.827

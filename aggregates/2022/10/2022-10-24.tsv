@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2022-10-24	22.313	2022-10-24 15:14	11.895	2022-10-24 23:46	16.241	46.919	2022-10-24 22:03	15.715	2022-10-24 15:15	26.584	2.855	2022-10-24 22:03	-5.683	2022-10-24 12:15	-3.430	974.581	2022-10-24 23:45	966.146	2022-10-24 00:04	971.854

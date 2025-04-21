@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2020-12-20	19.5	2020-12-20 15:41	2.312	2020-12-20 07:34	10.805	100.0	2020-12-20 00:00	22.77	2020-12-20 15:47	63.022	7.437	2020-12-20 00:00	-2.575	2020-12-20 15:48	2.545	1023.22	2020-12-20 09:58	1016.99	2020-12-20 17:32	1020.105

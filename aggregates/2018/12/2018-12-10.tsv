@@ -1,0 +1,2 @@
+date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
+2018-12-10	21.562	2018-12-10 14:03	8.25	2018-12-10 07:08	15.341	84.38	2018-12-10 07:12	27.71	2018-12-10 11:17	47.248	7.857	2018-12-10 17:44	-0.265	2018-12-10 04:57	3.672	1022.0	2018-12-10 00:13	1015.45	2018-12-10 15:38	1018.554
