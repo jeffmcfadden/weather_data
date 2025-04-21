@@ -14,7 +14,8 @@ class ObservationAggregation
 
     @aggregated_metrics = {}
     metric_ids.each do |metric_id|
-      metric_observations = observations.map{ _1.metric_observation(metric_id: metric_id) }
+      metric_observations = observations.map{ _1.metric_observation(metric_id: metric_id) }.compact
+      next unless metric_observations.any?
 
       @aggregated_metrics["#{metric_id}_max".to_sym]    = metric_observations.max_by(&:value)&.value
       @aggregated_metrics["#{metric_id}_max_at".to_sym] = metric_observations.max_by(&:value)&.observed_at

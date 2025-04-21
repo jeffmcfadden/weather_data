@@ -1,2 +1,2 @@
-date	temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg	humidity_pct_max	humidity_pct_max_at	humidity_pct_min	humidity_pct_min_at	humidity_pct_avg	dewpoint_c_max	dewpoint_c_max_at	dewpoint_c_min	dewpoint_c_min_at	dewpoint_c_avg	pressure_hPa_max	pressure_hPa_max_at	pressure_hPa_min	pressure_hPa_min_at	pressure_hPa_avg
-2015-03-02	16.437	2015-03-02 07:10	8.687	2015-03-02 23:55	12.358
+temp_c_max	temp_c_max_at	temp_c_min	temp_c_min_at	temp_c_avg
+16.437	2015-03-02 07:10:00 -0700	8.687	2015-03-02 23:55:00 -0700	12.358095138888888

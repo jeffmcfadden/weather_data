@@ -2,14 +2,26 @@
 
 require_relative '../lib/core'
 
-file_list = Dir.glob("observations/2022/07/*.tsv")
+file_list = Dir.glob("observations/**/*.tsv")
 
-observations = ObservationsLoader.new(metrics: METRICS).tap do |loader|
-  file_list.each { loader.load(File.open(_1)) }
-end.observations
+file_list.each do |file|
+  puts "Loading #{file}"
 
-observation_aggregation = ObservationAggregation.new(observations: observations)
+  observations = ObservationsLoader.new(metrics: METRICS).tap do |loader|
+    loader.load(File.open(file))
+  end.observations
 
-writer = ObservationAggregationWriter.new(observation_aggregation: observation_aggregation)
+  puts "  Aggregating"
+  observation_aggregation = ObservationAggregation.new(observations: observations)
 
-writer.write($stdout)
+  puts "  Writing"
+  outfile = file.gsub("observations", "aggregates")
+
+  # Create the directory if it doesn't exist
+  FileUtils.mkdir_p(File.dirname(outfile))
+
+  writer = ObservationAggregationWriter.new(observation_aggregation: observation_aggregation)
+  writer.write(File.open(outfile, "w"))
+
+  puts "  Done"
+end
