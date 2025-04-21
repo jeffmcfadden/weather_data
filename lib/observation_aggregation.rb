@@ -9,8 +9,8 @@ class ObservationAggregation
 
   def calculate_aggregated_metrics
     metric_ids = observations.flat_map do |observation|
-      observation.metric_observations.map{ _1.metric.id }
-    end.uniq
+      observation.metric_observations.map{ _1.metric&.id }
+    end.uniq.compact
 
     @aggregated_metrics = {}
     metric_ids.each do |metric_id|

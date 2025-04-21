@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/core'
+
+day = ARGV[0]
+
+if day.nil?
+  puts "Usage: #{$0} YYYY-MM-DD"
+  exit 1
+end
+
+def c_to_f(c)
+  (c.to_f * 1.8) + 32
+end
+
+year = day[0..3]
+month = day[5..6]
+
+aggregation_file = File.join("aggregates", year, month, "#{day}.tsv")
+
+data = ObservationAggregationLoader.new(metrics: METRICS).load(File.open(aggregation_file))
+
+data.each do |key, value|
+  if key == "temp_c_max" || key == "temp_c_min" || key == "temp_c_avg"
+    value = c_to_f(value)
+    puts "#{key} (in F): #{value}"
+  else
+    puts "#{key}: #{value}"
+  end
+end

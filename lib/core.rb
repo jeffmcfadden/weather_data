@@ -15,6 +15,7 @@ require_relative 'metric_observation'
 require_relative 'metric_observations_set'
 require_relative 'observation_aggregation_writer'
 require_relative 'daily_observations_set'
+require_relative 'observation_aggregation_loader'
 
 METRICS = [
   Metric.new(id: :temp_c,       header: "temp_c",       name: "Temperature (°C)", unit: "°C"),
