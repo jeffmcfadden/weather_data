@@ -63,9 +63,13 @@ stations that I trust.
 
 ## TODO
 
-- Import the rest of the data (tmp/sensor_data_export.csv)
-- Establish incoming data pipeline via cron, etc.
+- Setup auto-updating data cron job. Just update the file every minute and 
+  push once every 15 minutes or whatever. It'll be fine. You can do the 
+  separate branch thing later.
+- Export all data from ~April 1, 2025 to present
+- Import the same way you did (tmp/sensor_data_export.csv) (import old 
+  sensor data csv rb)
+- Now you're up to date and keeping it that way!
 - Tools to build
   - add_observation(observed_at, metric_id, value)
   - almanac builder (including class, writer, etc)
-  - 

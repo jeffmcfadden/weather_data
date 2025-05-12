@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+require 'json'
+require 'fileutils'
+require 'time'
+
+# === Configurable Section ===
+SUPPORTED_KEYS = {
+  'humidity' => :humidity_pct,
+  'dewpointf' => :dewpoint_c,
+  'baromabsin' => :pressure_hPa,
+  'tempf' => :temp_c,
+  'windspeedmph' => :wind_speed_mps,
+  'windgustmph' => :wind_gust_mps,
+  'maxdailygust' => :max_daily_gust_mps,
+  'hourlyrainin' => :rain_hourly_mm,
+  'eventrainin' => :rain_event_mm,
+  'dailyrainin' => :rain_daily_mm,
+  'weeklyrainin' => :rain_weekly_mm,
+  'monthlyrainin' => :rain_monthly_mm,
+  'yearlyrainin' => :rain_yearly_mm,
+  'totalrainin' => :rain_total_mm
+}
+# ============================
+
+# === Conversion Helpers ===
+def f_to_c(f) = (f.to_f - 32) * 5.0 / 9.0
+def inhg_to_hpa(inhg) = inhg.to_f * 33.8639
+def mph_to_mps(mph) = mph.to_f * 0.44704
+def in_to_mm(inches) = inches.to_f * 25.4
+# ===========================
+
+# Read and parse stdin JSON
+input = JSON.parse($stdin.read)
+timestamp = Time.strptime(input['dateutc'], "%Y-%m-%d %H:%M:%S")
+
+# Build output values hash
+values = {
+  observed_at: timestamp.strftime("%Y-%m-%d %H:%M")
+}
+
+SUPPORTED_KEYS.each do |input_key, output_key|
+  raw = input[input_key]
+  next unless raw
+
+  values[output_key] = case output_key
+                       when :dewpoint_c, :temp_c
+                         f_to_c(raw).round(3)
+                       when :pressure_hPa
+                         inhg_to_hpa(raw).round(3)
+                       when :wind_speed_mps, :wind_gust_mps, :max_daily_gust_mps
+                         mph_to_mps(raw).round(3)
+                       when :rain_hourly_mm, :rain_event_mm, :rain_daily_mm, :rain_weekly_mm, :rain_monthly_mm, :rain_yearly_mm, :rain_total_mm
+                         in_to_mm(raw).round(3)
+                       when :humidity_pct
+                         raw.to_f.round(3)
+                       else
+                         raw
+                       end
+end
+
+# Determine file path
+year = timestamp.year
+month = "%02d" % timestamp.month
+day = timestamp.strftime("%Y-%m-%d")
+path = File.join("observations", year.to_s, month)
+file = File.join(path, "#{day}.tsv")
+
+# Ensure directory exists
+FileUtils.mkdir_p(path)
+
+# Check and write header if necessary
+unless File.exist?(file)
+  File.write(file, values.keys.join("\t") + "\n")
+end
+
+# Reuse existing header order
+header = File.open(file, &:readline).strip.split("\t")
+row = header.map { |key| values[key.to_sym] || "" }.join("\t")
+
+# Append data
+File.open(file, 'a') { |f| f.puts row }

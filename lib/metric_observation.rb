@@ -1,6 +1,9 @@
 class MetricObservation
   attr_reader :metric, :observed_at, :value
 
+  # @param [Metric] metric The metric associated with this observation.
+  # @param [Time] observed_at The time the observation was made.
+  # @param [Float] value The value of the observation.
   def initialize(metric:, observed_at:, value:)
     @metric = metric
     @observed_at = observed_at

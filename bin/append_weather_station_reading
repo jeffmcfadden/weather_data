@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require "net/http"
+
+require_relative '../lib/core'
+
+
+current_conditions_json = Net::HTTP.get( URI("http://weather.local:4040/current_conditions") )
+
+now = Time.now
+year = now.year.to_s
+month = now.strftime("%m")
+day_file = now.strftime("%Y-%m-%d")
+FileUtils.mkdir_p(File.join("observations", year, month))
+
+
+today_file = File.join("observations", year, month, "#{day_file}.tsv")
+
+observations = []
+if File.exist?(today_file)
+  observations = ObservationsLoader.new(metrics: METRICS).load(File.open(today_file)).observations
+end
+
+reading = WeatherStationReading.from_json(current_conditions_json)
+
+observations << reading.to_observation
+
+File.open(today_file, "w") do |f|
+  ObservationsWriter.new(observations: observations).write(f)
+end
+
+puts "#{observations.size} observations written to #{day_file}"

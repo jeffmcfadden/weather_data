@@ -35,14 +35,22 @@ class ObservationsWriter
 
     # Write the header
     header_columns = ["observed_at"]
-    header_columns += observations.first.metric_observations.map(&:metric).map(&:header)
+
+    # Collect all possible metric ids from all observations, unique
+    metrics = observations.flat_map do |observation|
+      observation.metric_observations.map(&:metric)
+    end.uniq
+
+    metric_ids = metrics.map(&:id)
+
+    header_columns += metrics.map(&:header)
 
     io.puts(header_columns.join("\t"))
 
     # Write the data
     observations.each do |observation|
       row = [observation.observed_at.strftime("%Y-%m-%d %H:%M")]
-      row.concat(observation.metric_observations.map(&:value))
+      row.concat(observation.values(metric_ids: metric_ids))
       io.puts(row.join("\t"))
     end
 
