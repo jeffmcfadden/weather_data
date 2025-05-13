@@ -2,4 +2,39 @@
 
 require_relative '../lib/core'
 
-SITE_DIR = File.expand_path(File.join(__dir__, '..', "docs"))
+LOGGER = Logger.new($stdout)
+
+ROOT_DIR = File.expand_path(File.join(__dir__, '..'))
+SITE_DIR = File.join(ROOT_DIR, "docs")
+
+year = Time.now.year
+month = Time.now.strftime("%m")
+ymd = Time.now.strftime("%Y-%m-%d")
+
+observation_path = File.join(ROOT_DIR, "observations", "#{year}", "#{month}", "#{ymd}.tsv")
+
+observations = []
+
+File.open(observation_path) do |f|
+  observations = ObservationsLoader.new(metrics: METRICS).load(f).observations
+end
+
+current_conditions = observations.sort_by(&:observed_at).last
+
+current_temp_f = current_conditions[:temp_f]
+current_humidity_pct = current_conditions[:humidity_pct]
+current_dewpoint_f = current_conditions[:dewpoint_f]
+
+LOGGER.info "current_temp_f: #{current_temp_f}"
+LOGGER.info "current_humidity_pct: #{current_humidity_pct}"
+LOGGER.info "current_dewpoint_f: #{current_dewpoint_f}"
+
+# Write the current conditions to index.html
+template = File.open(File.join(SITE_DIR, "templates", "index.html")).read
+template.gsub!( "{{ current_temp_f }}", "#{current_temp_f} °F" )
+template.gsub!( "{{ current_humidity_pct }}", "#{current_humidity_pct} %" )
+template.gsub!( "{{ current_dewpoint_f }}", "#{current_dewpoint_f} °F" )
+
+File.open(File.join(SITE_DIR, "index.html"), 'w') do |f|
+  f.write(template)
+end
