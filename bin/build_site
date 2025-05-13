@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require_relative '../lib/core'
+require "tempfile"
+require "tmpdir"
 
 LOGGER = Logger.new($stdout)
 
@@ -31,10 +33,46 @@ LOGGER.info "current_dewpoint_f: #{current_dewpoint_f}"
 
 # Write the current conditions to index.html
 template = File.open(File.join(SITE_DIR, "templates", "index.html")).read
+template.gsub!( "{{ current_datetime }}", current_conditions.observed_at.strftime('%Y-%m-%d %H:%M') )
 template.gsub!( "{{ current_temp_f }}", "#{current_temp_f} °F" )
 template.gsub!( "{{ current_humidity_pct }}", "#{current_humidity_pct} %" )
 template.gsub!( "{{ current_dewpoint_f }}", "#{current_dewpoint_f} °F" )
+template.gsub!( "{{ ts }}", "#{Time.now.to_i}" )
 
 File.open(File.join(SITE_DIR, "index.html"), 'w') do |f|
   f.write(template)
 end
+
+# Now let's generate a plot of today's temperature
+
+
+Dir.mktmpdir {|dir|
+  gp_file_path = File.join(dir, "gnuplot_script.gp")
+
+  gnuplot_script = <<~GNUPLOT
+    set terminal pngcairo size 800,400 enhanced font 'Verdana,10'
+    set output '#{File.join(SITE_DIR, "images", "temperature_today.png")}'
+    set datafile separator '\t'
+    set xdata time
+    set timefmt "%Y-%m-%d %H:%M"
+    set format x "%H:%M"
+    set title "Temperature on #{ymd}"
+    set xlabel "Time"
+    set ylabel "Temperature (°F)"
+    set grid
+    plot '#{observation_path}' using 1:13 with lines title 'Temp (°F)'
+  GNUPLOT
+
+  puts gnuplot_script
+
+  File.open(gp_file_path, "w") do |gnuplot|
+    gnuplot.write(gnuplot_script)
+  end
+
+  # Run gnuplot
+  cmd = "gnuplot #{gp_file_path}"
+
+  puts "Will run: #{cmd}"
+
+  puts `#{cmd}`
+}

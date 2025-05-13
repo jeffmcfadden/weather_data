@@ -2,12 +2,18 @@
 <html>
 <head>
   <title>Green Shed Weather</title>
+
+  <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
 
 <h1>Green Shed Weather</h1>
 
 <h2>Current Conditions</h2>
+
+<p>
+  <small>As of {{ current_datetime }}</small>
+</p>
 
 <dl>
   <dt>Temperature</dt>
@@ -23,6 +29,10 @@
   <dt>Dewpoint</dt>
   <dd>{{ current_dewpoint_f }}</dd>
 </dl>
+
+<p>
+  <img class="full-width-graph" src="images/temperature_today.png?v={{ ts }}" alt="Temperature Today" />
+</p>
 
 </body>
 </html>
