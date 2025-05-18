@@ -3,6 +3,7 @@
 require_relative '../lib/core'
 require "tempfile"
 require "tmpdir"
+require "erb"
 
 LOGGER = Logger.new($stdout)
 
@@ -23,28 +24,29 @@ end
 
 current_conditions = observations.sort_by(&:observed_at).last
 
-current_temp_f = current_conditions[:temp_f]
-current_humidity_pct = current_conditions[:humidity_pct]
-current_dewpoint_f = current_conditions[:dewpoint_f]
-
-LOGGER.info "current_temp_f: #{current_temp_f}"
-LOGGER.info "current_humidity_pct: #{current_humidity_pct}"
-LOGGER.info "current_dewpoint_f: #{current_dewpoint_f}"
-
 # Write the current conditions to index.html
-template = File.open(File.join(SITE_DIR, "templates", "index.html")).read
-template.gsub!( "{{ current_datetime }}", current_conditions.observed_at.strftime('%Y-%m-%d %H:%M') )
-template.gsub!( "{{ current_temp_f }}", "#{current_temp_f} °F" )
-template.gsub!( "{{ current_humidity_pct }}", "#{current_humidity_pct} %" )
-template.gsub!( "{{ current_dewpoint_f }}", "#{current_dewpoint_f} °F" )
-template.gsub!( "{{ ts }}", "#{Time.now.to_i}" )
+template = File.open(File.join(SITE_DIR, "templates", "index.html.erb")).read
+
+template_locals = {}
+
+current_conditions.each do |key, value|
+  template_locals[key] = value
+end
+
+template_locals[:ts] = Time.now.to_i
+template_locals[:current_datetime] = current_conditions.observed_at.strftime('%Y-%m-%d %H:%M')
+
+rendered = ERB.new(template).result_with_hash(template_locals)
 
 File.open(File.join(SITE_DIR, "index.html"), 'w') do |f|
-  f.write(template)
+  f.write(rendered)
 end
 
 # Now let's generate a plot of today's temperature
 
+# We need to grab the column index of the value we care about, from this file
+header = File.open(observation_path, &:readline).strip.split("\t")
+temp_col_index = header.index("temp_f")
 
 Dir.mktmpdir {|dir|
   gp_file_path = File.join(dir, "gnuplot_script.gp")
@@ -60,7 +62,7 @@ Dir.mktmpdir {|dir|
     set xlabel "Time"
     set ylabel "Temperature (°F)"
     set grid
-    plot '#{observation_path}' using 1:13 with lines title 'Temp (°F)'
+    plot '#{observation_path}' using 1:#{temp_col_index} with lines title 'Temp (°F)'
   GNUPLOT
 
   puts gnuplot_script
