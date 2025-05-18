@@ -38,3 +38,10 @@ require_relative 'observation_aggregation_loader'
 require_relative 'weather_station_reading'
 require_relative 'graph_helpers'
 require_relative 'daily_summary'
+require_relative 'template_helpers'
+
+LOGGER = Logger.new($stdout)
+
+ROOT_DIR = File.expand_path(File.join(__dir__, '..'))
+SITE_DIR = File.join(ROOT_DIR, "docs")
+

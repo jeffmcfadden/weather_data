@@ -24,21 +24,27 @@ class ObservationsLoader
       # Split the line into columns
       columns = line.split("\t")
 
-      # The first column is the observed_at timestamp
-      observed_at = Time.strptime(columns[0], "%Y-%m-%d %H:%M")
+      begin
+        # The first column is the observed_at timestamp
+        observed_at = Time.strptime(columns[0], "%Y-%m-%d %H:%M")
 
-      # The rest of the columns are metric observations
-      metric_observations = columns[1..].map.with_index do |value, index|
-        metric = @metrics[header_columns[index + 1]]
+        # The rest of the columns are metric observations
+        metric_observations = columns[1..].map.with_index do |value, index|
+          metric = @metrics[header_columns[index + 1]]
 
-        MetricObservation.new(
-          metric: metric,
-          observed_at: observed_at,
-          value: value.to_f
-        )
+          MetricObservation.new(
+            metric: metric,
+            observed_at: observed_at,
+            value: value.to_f
+          )
+        end
+
+        @observations << Observation.new(observed_at: observed_at, metric_observations: metric_observations)
+      rescue StandardError => e
+        LOGGER.error "Error loading observation from io: #{io}: #{e.message}"
+
+        next
       end
-
-      @observations << Observation.new(observed_at: observed_at, metric_observations: metric_observations)
     end
 
     self # Allow chaining

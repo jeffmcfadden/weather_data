@@ -5,11 +5,6 @@ require "tempfile"
 require "tmpdir"
 require "erb"
 
-LOGGER = Logger.new($stdout)
-
-ROOT_DIR = File.expand_path(File.join(__dir__, '..'))
-SITE_DIR = File.join(ROOT_DIR, "docs")
-
 year = Time.now.year
 month = Time.now.strftime("%m")
 ymd = Time.now.strftime("%Y-%m-%d")
@@ -53,52 +48,4 @@ render_simple_metric_graph(metric: Metric.find(:solar_radiation_wm2),
              observations_path: observations_path,
                            line_color: "orange")
 
-date = Date.today
-dy = date.year.to_s
-dm = date.month.to_s.rjust(2, '0')
-dd = date.day.to_s.rjust(2, '0')
-
-daily_summary = DailySummary.new(date: date)
-
-daily_summary_path = File.join(SITE_DIR, dy, dm, "#{dy}-#{dm}-#{dd}.html")
-daily_summary_template = File.open(File.join(SITE_DIR, "templates", "daily_summary.html.erb")).read
-
-rendered = ERB.new(daily_summary_template).result_with_hash({ daily_summary: daily_summary } )
-
-FileUtils.mkdir_p File.join(SITE_DIR, dy, dm)
-File.open(daily_summary_path, 'w') do |f|
-  f.write(rendered)
-end
-
-
-#
-# Dir.mktmpdir {|dir|
-#   gp_file_path = File.join(dir, "gnuplot_script.gp")
-#
-#   gnuplot_script = <<~GNUPLOT
-#     set terminal pngcairo size 800,400 enhanced font 'Verdana,10'
-#     set output '#{File.join(SITE_DIR, "images", "temperature_today.png")}'
-#     set datafile separator '\t'
-#     set xdata time
-#     set timefmt "%Y-%m-%d %H:%M"
-#     set format x "%H:%M"
-#     set title "Temperature on #{ymd}"
-#     set xlabel "Time"
-#     set ylabel "Temperature (°F)"
-#     set grid
-#     plot '#{observation_path}' using 1:#{temp_col_index} with lines title 'Temp (°F)'
-#   GNUPLOT
-#
-#   puts gnuplot_script
-#
-#   File.open(gp_file_path, "w") do |gnuplot|
-#     gnuplot.write(gnuplot_script)
-#   end
-#
-#   # Run gnuplot
-#   cmd = "gnuplot #{gp_file_path}"
-#
-#   puts "Will run: #{cmd}"
-#
-#   puts `#{cmd}`
-# }
+render_daily_summary(date: Date.today)

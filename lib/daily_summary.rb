@@ -1,6 +1,18 @@
 class DailySummary
   attr_reader :date, :observations
 
+  def self.url_path_for(date:)
+    y = date.year.to_s
+    m = date.month.to_s.rjust(2, '0')
+    d = date.day.to_s.rjust(2, '0')
+
+    "/#{y}/#{m}/#{y}-#{m}-#{d}.html"
+  end
+
+  def url_path_for(date:)
+    self.class.url_path_for(date: date)
+  end
+
   def initialize(date:)
     date = Date.parse(date) if date.is_a?(String)
 

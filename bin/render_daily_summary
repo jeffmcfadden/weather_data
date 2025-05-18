@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/core'
+require "tempfile"
+require "tmpdir"
+require "erb"
+
+date = Date.parse(ARGV[0]) if ARGV[0]
+
+raise "Please provide a date in YYYY-MM-DD format" if date.nil?
+
+render_daily_summary(date: date)
