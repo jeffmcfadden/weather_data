@@ -21,12 +21,16 @@ class Observation
     observed_at.strftime('%Y-%m-%d %H:%M')
   end
 
+  # @param metric_id [Symbol] The metric ID to look up
+  # @return [MetricObservation, nil] The MetricObservation object for the specified metric ID
   def metric_observation(metric_id:)
     metric_observations.find { _1.metric.id == metric_id }
   end
 
+  # @param metric_id [Symbol, String] The metric ID to look up
+  # @return [Float, nil] The value of the specified metric
   def [](metric_id)
-    metric_observation(metric_id: metric_id)&.value
+    metric_observation(metric_id: metric_id.to_sym)&.value
   end
 
   def to_h

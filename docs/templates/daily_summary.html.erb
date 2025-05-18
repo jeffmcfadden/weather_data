@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Green Shed Weather</title>
+
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+
+<h1><%= daily_summary.date %></h1>
+
+<table>
+  <tr>
+    <th>Metric</th>
+    <th>Max Value</th>
+    <th>Max Time</th>
+    <th>Min Value</th>
+    <th>Min Time</th>
+    <th>Avg Value</th>
+  </tr>
+
+<% daily_summary.observed_metrics.each do |metric| %>
+  <tr>
+    <th>
+      <%= metric.name %>
+    </th>
+    <td>
+      <%= daily_summary.max_observation(metric: metric).value&.round(2) %>
+    </td>
+    <td>
+      <%= daily_summary.max_observation(metric: metric).observed_at.strftime("%-l:%M%P") %>
+    </td>
+    <td>
+      <%= daily_summary.min_observation(metric: metric).value&.round(2) %>
+    </td>
+    <td>
+      <%= daily_summary.min_observation(metric: metric).observed_at.strftime("%-l:%M%P") %>
+    </td>
+    <td>
+      <%= daily_summary.average_value(metric: metric)&.round(2) %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+</body>
+</html>
