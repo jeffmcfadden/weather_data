@@ -36,4 +36,4 @@ require_relative 'observation_aggregation_writer'
 require_relative 'daily_observations_set'
 require_relative 'observation_aggregation_loader'
 require_relative 'weather_station_reading'
-
+require_relative 'graph_helpers'
