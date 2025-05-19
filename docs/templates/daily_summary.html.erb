@@ -10,8 +10,8 @@
 <h1><%= daily_summary.date %></h1>
 
 <p>
-  <a href="<%= daily_summary.url_path_for(date: date - 1) %>"><%= daily_summary.date - 1 %></a>
-  <a href="<%= daily_summary.url_path_for(date: date + 1) %>"><%= daily_summary.date + 1 %></a>
+  <a href="<%= daily_summary.url_path_for(date: daily_summary.date - 1) %>"><%= daily_summary.daily_summary.date - 1 %></a>
+  <a href="<%= daily_summary.url_path_for(date: daily_summary.date + 1) %>"><%= daily_summary.daily_summary.date + 1 %></a>
 </p>
 
 <table>
