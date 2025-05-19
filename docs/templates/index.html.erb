@@ -42,6 +42,22 @@
   <img class="full-width-graph" src="images/solar_radiation_today.png?v=<%= ts %>" alt="Solar Radiation Today" />
 </p>
 
+<hr />
+
+<h2>Previous Years on this Day</h2>
+<table>
+  <% temp_f = Metric.find(:temp_f) %>
+  <% previous_years_summaries.each do |year, summary| %>
+    <tr>
+      <td>
+        <%= summary.date %>
+      </td>
+      <td>
+        <%= summary.max_observation(metric: temp_f).value&.round(2) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
 
 </body>
 </html>
