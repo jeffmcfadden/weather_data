@@ -18,9 +18,13 @@ def render_simple_metric_graph(metric:, output_name:, observations_path:, line_c
       set xdata time
       set timefmt "%Y-%m-%d %H:%M"
       set format x "%H:%M"
-      set title "#{metric.name} on #{ymd}"
-      set xlabel "Time"
-      set ylabel "#{metric.name}"
+      set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb "#333333" behind
+      set border lc rgb "#DDDDDD"
+      set tics textcolor rgb "#DDDDDD"
+      set title "#{metric.name} on #{ymd}" textcolor rgb "#DDDDDD"
+      set xlabel "Time" textcolor rgb "#DDDDDD"
+      set ylabel "#{metric.name}" textcolor rgb "#DDDDDD"
+      set key textcolor rgb "#DDDDDD"
       set grid
       plot '#{observations_path}' using 1:#{col_index} with lines linecolor rgb "#{line_color}" title '#{metric.name}'
     GNUPLOT
