@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/core'
+require "tempfile"
+require "tmpdir"
+require "erb"
+
+# This script repairs the observations by converting temperature from Celsius to Fahrenheit, etc.
+
+date = Date.parse(ARGV[0]) if ARGV[0]
+raise "Please provide a date in YYYY-MM-DD format" if date.nil?
+
+loader = ObservationsLoader.loader_with(date: date)
+
+observations = loader.observations
+
+observations.each(&:fill_missing!)
+
+writer = ObservationsWriter.new(observations: observations)
+
+File.open(ObservationsLoader.path_for_date(date), 'w') do |file|
+  writer.write(file, metrics: METRICS)
+end

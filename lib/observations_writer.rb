@@ -21,6 +21,10 @@
 class ObservationsWriter
   attr_reader :observations
 
+  def self.path_for_date(date)
+    ObservationsLoader.path_for_date(date)
+  end
+
   # @params [Array<Observation>] observations The observations to be written.
   # @return [ObservationsWriter] The instance of the writer, allowing for method chaining.
   #
@@ -30,16 +34,18 @@ class ObservationsWriter
     self
   end
 
-  def write(io)
+  def write(io, metrics: nil)
     raise ArgumentError, "observations cannot be nil" if @observations.nil?
 
     # Write the header
     header_columns = ["observed_at"]
 
-    # Collect all possible metric ids from all observations, unique
-    metrics = observations.flat_map do |observation|
-      observation.metric_observations.map(&:metric)
-    end.uniq
+    if metrics.nil?
+      # Collect all possible metric ids from all observations, unique
+      metrics = observations.flat_map do |observation|
+        observation.metric_observations.map(&:metric)
+      end.uniq
+    end
 
     metric_ids = metrics.map(&:id)
 

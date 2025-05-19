@@ -1,6 +1,20 @@
 class ObservationsLoader
   attr_reader :observations
 
+  def self.path_for_date(date)
+    y = date.year.to_s
+    m = date.month.to_s.rjust(2, '0')
+    d = date.day.to_s.rjust(2, '0')
+    File.join(ROOT_DIR, "observations", "#{y}", "#{m}", "#{y}-#{m}-#{d}.tsv")
+  end
+
+  # @return [ObservationsLoader] The instance of the loader, allowing for method chaining.
+  def self.loader_with(date:)
+    observations_path = path_for_date(date)
+
+    new(metrics: METRICS).load(File.open(observations_path))
+  end
+
   def initialize(metrics: [])
     @metrics = metrics.map{ [_1.header, _1] }.to_h
     @observations = []

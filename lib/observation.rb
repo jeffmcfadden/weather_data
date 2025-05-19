@@ -17,6 +17,10 @@ class Observation
     }
   end
 
+  def includes_metric?(metric_id)
+    metric_observations.any? { _1.metric.id == metric_id }
+  end
+
   def observed_at_minute
     observed_at.strftime('%Y-%m-%d %H:%M')
   end
@@ -42,6 +46,46 @@ class Observation
 
   def to_s
     to_h.to_s
+  end
+
+  def fill_missing!
+    fill_missing_temperatures!
+    fill_missing_dewpoints!
+  end
+
+  private
+
+  def fill_missing_temperatures!
+    if includes_metric?(:temp_c) && !includes_metric?(:temp_f)
+      metric_observations << MetricObservation.new(
+        metric: Metric.find(:temp_f),
+        observed_at: observed_at,
+        value: ((self[:temp_c] * 9.0 / 5.0) + 32.0).round(4)
+      )
+    elsif includes_metric?(:temp_f) && !includes_metric?(:temp_c)
+      metric_observations << MetricObservation.new(
+        metric: Metric.find(:temp_c),
+        observed_at: observed_at,
+        value: ((self[:temp_f] - 32.0) * 5.0 / 9.0).round(4)
+      )
+    end
+  end
+
+  def fill_missing_dewpoints!
+    if includes_metric?(:dewpoint_c) && !includes_metric?(:dewpoint_f)
+      metric_observations << MetricObservation.new(
+        metric: Metric.find(:dewpoint_f),
+        observed_at: observed_at,
+        value: ((self[:dewpoint_c] * 9.0 / 5.0) + 32.0).round(4)
+      )
+    elsif includes_metric?(:dewpoint_f) && !includes_metric?(:dewpoint_c)
+      metric_observations << MetricObservation.new(
+        metric: Metric.find(:dewpoint_c),
+        observed_at: observed_at,
+        value: ((self[:dewpoint_f] - 32.0) * 5.0 / 9.0).round(4)
+      )
+    end
+
   end
 
 end
