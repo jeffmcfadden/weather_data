@@ -70,7 +70,32 @@ observed_at	temp_c	humidity_pct	dewpoint_c	pressure_hPa	wind_speed_mps	wind_gust
 EOS
 
     assert_equal expected, io.string
+  end
 
+  def test_dont_touch_good_data
+    sample_observations = <<-EOS
+observed_at	temp_c	humidity_pct	dewpoint_c	pressure_hPa	wind_speed_mps	wind_gust_mps	wind_dir_deg	uv_index	solar_radiation_wm2	rain_hourly_mm	rain_hourly_in	temp_f	dewpoint_f	wind_speed_mph	wind_gust_mph
+2025-05-12 00:00	28.0	25.0	10.772	1007.586	0.0	0.0	223.0	0.0	0.0	0.3048	0.012	82.4	51.39	0.0	0.0
+2025-05-12 00:01	27.889	25.0	10.683	1007.688	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.2	51.23	0.0	0.0
+2025-05-12 00:02	27.889	25.0	10.683	1007.586	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.2	51.23	0.0	0.0
+2025-05-12 00:03	27.889	25.0	10.683	1007.586	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.2	51.23	0.0	0.0
+2025-05-12 00:04	27.889	25.0	10.683	1007.586	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.2	51.23	0.0	0.0
+2025-05-12 00:05	27.889	25.0	10.683	1007.485	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.2	51.23	0.0	0.0
+2025-05-12 00:06	27.889	25.0	10.683	1007.485	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.2	51.23	0.0	0.0
+2025-05-12 00:07	27.778	25.0	10.589	1007.485	0.0	0.0	223.0	0.0	0.0	0.0	0.0	82.0	51.06	0.0	0.0
+    EOS
+
+    loader = ObservationsLoader.new(metrics: METRICS).load(sample_observations)
+
+    observations = loader.observations
+    observations.each(&:fill_missing!)
+
+    writer = ObservationsWriter.new(observations: observations)
+    io = StringIO.new
+
+    writer.write(io, metrics: METRICS)
+
+    assert_equal sample_observations, io.string
   end
 
 end

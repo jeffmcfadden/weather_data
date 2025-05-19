@@ -7,6 +7,8 @@ require "active_support/time"
 
 require_relative 'metric'
 
+BEGINNING_OF_OBSERVATIONS = Date.new(2015, 1, 1)
+
 METRICS = [
   Metric.new(id: :temp_c,       header: "temp_c",       name: "Temperature (°C)", unit: "°C"),
   Metric.new(id: :humidity_pct, header: "humidity_pct", name: "Humidity (%)",     unit: "%"),

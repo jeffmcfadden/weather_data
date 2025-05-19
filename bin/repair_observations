@@ -10,6 +10,11 @@ require "erb"
 date = Date.parse(ARGV[0]) if ARGV[0]
 raise "Please provide a date in YYYY-MM-DD format" if date.nil?
 
+unless File.exist?( ObservationsLoader.path_for_date(date) )
+  puts "File not found for date #{date}. Please provide a valid date."
+  exit 0
+end
+
 loader = ObservationsLoader.loader_with(date: date)
 
 observations = loader.observations

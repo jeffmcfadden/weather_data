@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/core'
+require 'tempfile'
+require 'tmpdir'
+require 'erb'
+
+MAX_PROCESSES = 16
+dates = (BEGINNING_OF_OBSERVATIONS..Date.today).to_a
+
+dates.each_slice(MAX_PROCESSES) do |batch|
+  pids = batch.map do |date|
+    fork do
+      cmd = "bin/repair_observations #{date}"
+      puts "Running #{cmd}"
+      exec(cmd)
+    end
+  end
+  pids.each { |pid| Process.wait(pid) }
+end

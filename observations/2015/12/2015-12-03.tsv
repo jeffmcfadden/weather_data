@@ -1,2 +1,2 @@
-observed_at	temp_c	humidity_pct	dewpoint_c	pressure_hPa
-2015-12-03 21:21	10.875
+observed_at	temp_c	humidity_pct	dewpoint_c	pressure_hPa	wind_speed_mps	wind_gust_mps	wind_dir_deg	uv_index	solar_radiation_wm2	rain_hourly_mm	rain_hourly_in	temp_f	dewpoint_f	wind_speed_mph	wind_gust_mph
+2015-12-03 21:21	10.875											51.575			
