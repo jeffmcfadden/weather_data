@@ -42,11 +42,11 @@ def render_current_conditions
   template_locals[:ts] = Time.now.to_i
   template_locals[:current_datetime] = current_conditions.observed_at.strftime('%Y-%m-%d %H:%M')
 
-  previous_years_summaries = (BEGINNING_OF_OBSERVATIONS.year..(Date.today.year-1)).map do |y|
+  other_years_summaries = (BEGINNING_OF_OBSERVATIONS.year..(Date.today.year)).map do |y|
     [y, DailySummary.new(date: Date.new(y, Time.now.month, Time.now.day))]
   end
 
-  rendered = ERB.new(template).result_with_hash(template_locals.merge({ previous_years_summaries: previous_years_summaries }))
+  rendered = ERB.new(template).result_with_hash(template_locals.merge({ other_years_summaries: other_years_summaries }))
 
   File.open(File.join(SITE_DIR, "index.html"), 'w') do |f|
     f.write(rendered)

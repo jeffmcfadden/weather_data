@@ -44,10 +44,14 @@
 
 <hr />
 
-<h2>Previous Years on this Day</h2>
+<h2>Other Years on this Day</h2>
 <table>
+  <tr>
+    <th>Date</th>
+    <th>Max Temperature (°F)</th>
+  </tr>
   <% temp_f = Metric.find(:temp_f) %>
-  <% previous_years_summaries.each do |year, summary| %>
+  <% other_years_summaries.each do |year, summary| %>
     <tr>
       <td>
         <%= summary.date %>
