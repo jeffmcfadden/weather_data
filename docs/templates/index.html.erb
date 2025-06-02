@@ -57,7 +57,7 @@
         <%= summary.date %>
       </td>
       <td>
-        <%= summary.max_observation(metric: temp_f).value&.round(2) %>
+        <%= summary.max_observation(metric: temp_f)&.value&.round(2) %>
       </td>
     </tr>
   <% end %>
