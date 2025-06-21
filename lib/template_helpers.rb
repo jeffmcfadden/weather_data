@@ -22,7 +22,6 @@ def render_current_conditions
   ymd = Time.now.strftime("%Y-%m-%d")
 
   observations_path = File.join(ROOT_DIR, "observations", "#{year}", "#{month}", "#{ymd}.tsv")
-
   observations = []
 
   File.open(observations_path) do |f|
@@ -31,6 +30,10 @@ def render_current_conditions
 
   current_conditions = observations.sort_by(&:observed_at).last
 
+  # Calculate daily high and low temperatures
+  daily_temperatures = observations.map { |obs| obs.metric_observations.find { |mo| mo.metric.id == :temp_f }&.value }
+  daily_high = daily_temperatures.compact.max
+  daily_low = daily_temperatures.compact.min
 
   # Write the current conditions to index.html
   template = File.open(File.join(SITE_DIR, "templates", "index.html.erb")).read
@@ -41,6 +44,8 @@ def render_current_conditions
 
   template_locals[:ts] = Time.now.to_i
   template_locals[:current_datetime] = current_conditions.observed_at.strftime('%Y-%m-%d %H:%M')
+  template_locals[:daily_high] = daily_high
+  template_locals[:daily_low] = daily_low
 
   other_years_summaries = (BEGINNING_OF_OBSERVATIONS.year..(Date.today.year)).map do |y|
     [y, DailySummary.new(date: Date.new(y, Time.now.month, Time.now.day))]
@@ -63,5 +68,4 @@ def render_current_conditions
                              output_name: "solar_radiation_today.png",
                              observations_path: observations_path,
                              line_color: "orange")
-
 end
