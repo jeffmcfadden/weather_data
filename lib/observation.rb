@@ -28,7 +28,7 @@ class Observation
   # @param metric_id [Symbol] The metric ID to look up
   # @return [MetricObservation, nil] The MetricObservation object for the specified metric ID
   def metric_observation(metric_id:)
-    metric_observations.find { _1.metric.id == metric_id }
+    metric_observations.find { _1.metric&.id == metric_id }
   end
 
   # @param metric_id [Symbol, String] The metric ID to look up
