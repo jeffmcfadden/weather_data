@@ -47,6 +47,14 @@ def render_current_conditions
   template_locals[:daily_high] = daily_high
   template_locals[:daily_low] = daily_low
 
+  # Yesterday, for links.
+  yesterday = Time.now - 86400 # 24 hours ago
+  yesterdays_formatted_date = yesterday.strftime("%B %-d, %Y")
+  yesterdays_summary_url = "/#{yesterday.strftime('%Y/%m/%Y-%m-%d')}.html"
+
+  template_locals[:yesterdays_formatted_date] = yesterdays_formatted_date
+  template_locals[:yesterdays_summary_url] = yesterdays_summary_url
+
   other_years_summaries = (BEGINNING_OF_OBSERVATIONS.year..(Date.today.year)).map do |y|
     [y, DailySummary.new(date: Date.new(y, Time.now.month, Time.now.day))]
   end
