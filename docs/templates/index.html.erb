@@ -40,6 +40,11 @@
 </dl>
 
 <dl>
+  <dt>Daily Rain</dt>
+  <dd><%= daily_rain.nil? ? "Unavailable" : "#{format('%.2f', daily_rain)} in" %></dd>
+</dl>
+
+<dl>
   <dt>Daily High Temperature</dt>
   <dd><%= daily_high %></dd>
 </dl>
@@ -56,6 +61,12 @@
 <p>
   <img class="full-width-graph" src="images/solar_radiation_today.png?v=<%= ts %>" alt="Solar Radiation Today" />
 </p>
+
+<% unless daily_rain.nil? %>
+<p>
+  <img class="full-width-graph" src="images/rainfall_today.png?v=<%= ts %>" alt="Daily Rainfall Today (in)" />
+</p>
+<% end %>
 
 <hr />
 

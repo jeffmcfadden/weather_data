@@ -1,4 +1,4 @@
-def render_simple_metric_graph(metric:, output_name:, observations_path:, line_color: "#0077cc")
+def render_simple_metric_graph(metric:, output_name:, observations_path:, line_color: "#0077cc", label: metric.name, y_range: nil)
   # We need to grab the column index of the value we care about, from this file
   header = File.open(observations_path, &:readline).strip.split("\t")
   col_index = header.index(metric.header) + 1
@@ -21,12 +21,13 @@ def render_simple_metric_graph(metric:, output_name:, observations_path:, line_c
       set object 1 rectangle from screen 0,0 to screen 1,1 fillcolor rgb "#333333" behind
       set border lc rgb "#DDDDDD"
       set tics textcolor rgb "#DDDDDD"
-      set title "#{metric.name} on #{ymd}" textcolor rgb "#DDDDDD"
+      set title "#{label} on #{ymd}" textcolor rgb "#DDDDDD"
       set xlabel "Time" textcolor rgb "#DDDDDD"
-      set ylabel "#{metric.name}" textcolor rgb "#DDDDDD"
+      set ylabel "#{label}" textcolor rgb "#DDDDDD"
       set key textcolor rgb "#DDDDDD"
       set grid
-      plot '#{observations_path}' using 1:#{col_index} with lines linecolor rgb "#{line_color}" title '#{metric.name}'
+      #{"set yrange #{y_range}" if y_range}
+      plot '#{observations_path}' using 1:#{col_index} with lines linecolor rgb "#{line_color}" title '#{label}'
     GNUPLOT
 
     File.open(gp_file_path, "w") do |gnuplot|

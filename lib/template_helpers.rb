@@ -46,6 +46,8 @@ def render_current_conditions
   template_locals[:current_datetime] = current_conditions.observed_at.strftime('%Y-%m-%d %H:%M')
   template_locals[:daily_high] = daily_high
   template_locals[:daily_low] = daily_low
+  # The collector stores cumulative dailyrainin in the legacy rain_hourly_in column.
+  template_locals[:daily_rain] = template_locals[:rain_hourly_in]
 
   # Yesterday, for links.
   yesterday = Time.now - 86400 # 24 hours ago
@@ -76,4 +78,12 @@ def render_current_conditions
                              output_name: "solar_radiation_today.png",
                              observations_path: observations_path,
                              line_color: "orange")
+
+  unless template_locals[:daily_rain].nil?
+    render_simple_metric_graph(metric: Metric.find(:rain_hourly_in),
+                               output_name: "rainfall_today.png",
+                               observations_path: observations_path,
+                               label: "Daily Rainfall (in)",
+                               y_range: "[0:*]")
+  end
 end
